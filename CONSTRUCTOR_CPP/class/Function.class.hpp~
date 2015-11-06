@@ -1,0 +1,55 @@
+#ifndef FUNCTION_CLASS_HPP
+# define FUNCTION_CLASS_HPP
+
+#include <iostream>
+#include <iomanip>
+#include <cstring>
+#include <cstdlib> 
+class Function
+{
+
+public:
+  Function(void);
+  Function(std::string const name);
+  Function(Function const &tocopy);
+
+  ~Function(void);
+
+  Function	&operator=(Function const &other);
+
+  void		add(void);
+
+  std::string	getName(void) const;
+  void		setName(std::string const src);
+
+  std::string	getType(void) const;
+  void		setType(std::string const type);
+  
+  int		getNbParameter(void) const;
+  void		setNbParameter(int const nbParameter);
+
+  std::string	getParameter(int const nb);
+  void		setParameter(std::string const parameter, int const index);
+
+  std::string	getVisibility(void) const;
+  void		setVisibility(std::string const visibility);
+
+  int		getNbFunction(void) const;
+
+private:
+  std::string	_name;
+  std::string	_type;
+  int		_nbParameter;
+  std::string	_parameter[4];
+  std::string	_visibility;
+
+
+  static int	_nbFunction;
+};
+
+/*
+ * OTHER EXTERN CLASS
+ */
+std::ostream	&operator<<(std::ostream &o, Function &var);
+
+# endif

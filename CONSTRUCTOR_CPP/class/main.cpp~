@@ -1,7 +1,7 @@
 #include <iostream>
 #include <fstream>
-#include "class/Variable.class.hpp"
-#include "class/Function.class.hpp"
+#include "Variable.class.hpp"
+#include "Function.class.hpp"
 
 #include <iostream>
 #include <cstring>
@@ -208,6 +208,30 @@ int	main(void)
   std::ofstream myCppFile;
   std::string	str_class_cpp = className;
   str_class_cpp += ".class.cpp";
+
+    //constructor & overload operator
+  myCppFile<<className<<"::"<<className<<"(void)"<<std::endl;
+  myCppFile<<"{"<<std::endl;
+  myCppFile<<"// std::cout<<\"const default call\""<<std::endl<<"}"<<std::endl;
+
+
+
+  myCppFile<<className<<"::"<<className<<"("<<className<<" const &src)"<<std::endl;
+  myCppFile<<"{"<<std::endl;
+  myCppFile<<"// std::cout<<\"const default call\""<<std::endl<<"}"<<std::endl;
+
+
+  myCppFile<<className<<"::~"<<className<<"(void)"<<std::endl;
+    myCppFile<<"{"<<std::endl;
+  myCppFile<<"// std::cout<<\"des default call\""<<std::endl<<"}"<<std::endl;
+  myCppFile<<std::endl;
+
+  myCppFile<<className<<"\t"<<className<<"::&operator=("<<className<<" const &srcOp)"<<std::endl;
+  myCppFile<<"{"<<std::endl;
+  myCppFile<<"// std::cout<<\"operator= call\""<<std::endl<<"}"<<std::endl;
+  myCppFile<<std::endl;
+
+
 
   /*
    * Write in "file".class.cpp

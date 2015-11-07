@@ -23,6 +23,11 @@ public:
 
   void		add(void);
   void		write_file(std::ostream &os);
+  void		write_file_getter_proto(std::ostream &os_get);
+  void		write_file_setter_proto(std::ostream &os_set);
+  void		write_file_getter_struct(std::ostream &os_get);
+  void		write_file_setter_struct(std::ostream &os_set);
+  bool 	checkValideIniVisibility(std::string const visibility);
   /*
    * Seter & Geter
    */

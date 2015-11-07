@@ -23,7 +23,9 @@ public:
    */
   void		add(void);
   void		print(void);
- 
+  void          writeFunctionPrototype(std::ostream &os);  
+  void          writeFunctionStruct(std::ostream &os);  
+  bool		checkValideIniVisibility(std::string const visibility);
   /*
    * Getter & Setter
    */
@@ -42,8 +44,8 @@ public:
   bool		getStaticOrMembre(void) const;
   void		setStaticOrMembre(bool const a);
   
-  std::string	getNameClass(void) const;
-  void		setNameClass(std::string const src);
+  std::string	getClassName(void) const;
+  void		setClassName(std::string const src);
 private:
   std::string	_name;
   std::string	_nameClass;

@@ -11,14 +11,12 @@ int	Function::_nbFunction = 0;
  */
 Function::Function(void)
 {
-  this->_nbFunction++;
   return;
 }
 
 Function::Function(std::string const nameClass):
   _nameClass(nameClass)
 {
-  this->_nbFunction++;
   std::cout << "Cons String var" << std::endl;
   return;
 }
@@ -26,7 +24,6 @@ Function::Function(std::string const nameClass):
 Function::Function(Function const &tocopy):
   _name(tocopy._name)
 {
-  this->_nbFunction++;
   std::cout << "Cons Copy var" << std::endl;
   return;
 }
@@ -64,7 +61,16 @@ void		Function::add(void)
   int i = 0;
   std::string buff;
 
-  std::cout << "Enter function's sweaty name: ";
+  this->_nbFunction++;
+
+  std::cout << "* FUNCTION *"<<std::endl;
+  while(this->checkValideIniVisibility(this->_visibility) == false)
+    {
+      std::cout << "Visibility: ";
+      std::getline (std::cin,this->_visibility);
+    }
+  
+  std::cout << "Function name: ";
   std::getline (std::cin,this->_name);
 
   std::string y = "y";
@@ -77,7 +83,7 @@ void		Function::add(void)
   else
     this->_staticOrMembre = false;
 
-  std::cout << "Type? : ";
+  std::cout << "Type: ";
   std::getline (std::cin,this->_type);
 
   std::cout << "Number of parameter: ";
@@ -87,13 +93,12 @@ void		Function::add(void)
   
   while (t)
     {
-      std::cout << "Name parameter " << (i + 1) << ": ";
+      std::cout << "Type and Name parameter " << (i + 1) << ": ";
       std::getline (std::cin,this->_parameter[i++]);
       t--;
     }
 
-  std::cout << "Visibility: ";
-  std::getline (std::cin,this->_visibility);
+  
 }
 
 void            Function::print(void)
@@ -119,10 +124,74 @@ void            Function::print(void)
     std::cout<<"void);"<<std::endl;
 }
 
+  //redirect the write in file descriptor in parameter
+//write the function prototype
+void            Function::writeFunctionPrototype(std::ostream &os)
+{
+  int index = 0;
+
+  os <<"\t";
+  if (this->_staticOrMembre == true)
+    os<<"static ";
+  os<<this->getType();
+  os <<"\t\t"<<this->getName()<<"(";
+  if (this->_nbParameter)
+    {
+      while (index < this->_nbParameter)
+	{
+	  if (index)
+	    os<<", ";
+	  os<<this->_parameter[index++];
+	}
+      os<<");"<<std::endl;
+    }
+  else
+    os<<"void);"<<std::endl;
+}
+
+
+  //redirect the write in file descriptor in parameter
+//write the struct function
+void            Function::writeFunctionStruct(std::ostream &os)
+{
+  int index = 0;
+
+  os<<this->getType();
+  os <<"\t\t"<<this->getClassName()<<"::";
+  os<<this->getName()<<"(";
+  if (this->_nbParameter)
+    {
+      while (index < this->_nbParameter)
+	{
+	  if (index)
+	    os<<", ";
+	  os<<this->_parameter[index++];
+	}
+      os<<")"<<std::endl;
+    }
+  else
+    os<<"void)"<<std::endl;
+  
+  os<<"{"<<std::endl;
+  os<<"// std::cout << "<<this->getName()<<" call << std::end;"<<std::endl;
+  os<<"}"<<std::endl;
+}
+
+bool          Function::checkValideIniVisibility(std::string const visibility)
+{
+  if (visibility == "private")
+    return true;
+  else if (visibility == "public")
+    return true;
+  else if (visibility == "protected")
+    return true;
+  return false;
+}
+
 
 /*
  *
- * Geter and seter
+ * Getter and setter
  */
 std::string	Function::getName(void) const
 {
@@ -134,11 +203,11 @@ void		Function::setName(std::string const src)
   return;
 }
 
-std::string	Function::getNameClass(void) const
+std::string	Function::getClassName(void) const
 {
   return this->_nameClass;
 }
-void		Function::setNameClass(std::string const src)
+void		Function::setClassName(std::string const src)
 {
   this->_nameClass = src;
   return;

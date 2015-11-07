@@ -11,14 +11,12 @@ int	Variable::_nbVariable = 0;
  */
 Variable::Variable(void)
 {
-  this->_nbVariable++;
   return;
 }
 
 Variable::Variable(std::string const className):
   _className(className)
 {
-  this->_nbVariable++;
   std::cout << "Cons String var" << std::endl;
   return;
 }
@@ -60,8 +58,29 @@ Variable      &  Variable::operator=(Variable const &other)
 void		Variable::add(void)
 {
   
-  std::cout << "Enter variable's sweaty name: ";
-  std::getline (std::cin,this->_name);
+  this->_nbVariable++;
+
+  std::cout << "* VARIABLE *"<<std::endl;
+
+  while(this->checkValideIniVisibility(this->_visibility) == false)
+    {
+      std::cout << "Visibility variable: ";
+      std::getline (std::cin,this->_visibility);
+    }
+  if (this->_visibility == "private")
+    {
+      while(this->_name[0] != '_')
+	{
+	  std::cout << "Private Variable must be prefixed by '_'"<<std::endl;
+	  std::cout << "Enter variable name: ";
+	  std::getline (std::cin,this->_name);
+	}
+    }
+  else
+    {
+      	  std::cout << "Enter variable name: ";
+	  std::getline (std::cin,this->_name);
+    }
 
   std::string y = "y";
   std::string n = "n";
@@ -74,18 +93,18 @@ void		Variable::add(void)
   else
     this->_staticOrMembre = false;
 
-  std::cout << "Type? : ";
+  std::cout << "Type: ";
   std::getline (std::cin,this->_type);
-
+  /* //Not use for the moment
   std::cout << "Value: ";
   std::getline (std::cin,this->_value);
-
-  std::cout << "Visibility: ";
-  std::getline (std::cin,this->_visibility);
+  */
+  
 }
 
 void		Variable::write_file(std::ostream &os)
 {
+  
   os <<"\t";
   if (this->_staticOrMembre == true)
     os<<"static ";
@@ -93,6 +112,90 @@ void		Variable::write_file(std::ostream &os)
   os<<"\t\t"<<this->getName()<<";"<<std::endl;
 }
 
+void		Variable::write_file_getter_proto(std::ostream &os_get)
+{
+  std::string buff;
+
+  buff = this->getName();
+  buff[0] = 't';  // replace _ by 't' for complete le ge 
+  buff[1] = buff[1] -32; // Upper the "first" c
+  os_get <<"\t";
+  if (this->_staticOrMembre == true)
+    os_get<<"static ";
+  os_get<<this->getType();
+  os_get<<"\t\tge"<<buff<<"(void) const;"<<std::endl;
+  
+}
+
+void		Variable::write_file_setter_proto(std::ostream &os_set)
+{
+  std::string buff;
+
+  buff = this->getName();
+  buff[0] = 't';  // replace _ by 't' for complete le se 
+  buff[1] = buff[1] -32; // Upper the "first" c
+  os_set <<"\t";
+  if (this->_staticOrMembre == true)
+    os_set<<"static ";
+  os_set<<this->getType();
+  os_set<<"\t\tse"<<buff<<"(";
+
+  buff[0] = ' ';  // replace 't' by ' '
+  buff[1] = buff[1] +32; // Loupper the "first" c
+  os_set<<this->getType()<<" const"<<buff<< ");"<<std::endl<<std::endl;
+}
+
+void		Variable::write_file_getter_struct(std::ostream &os_get)
+{
+  std::string buff;
+
+  buff = this->getName();
+  buff[0] = 't';  // replace _ by 't' for complete le ge 
+  buff[1] = buff[1] -32; // Upper the "first" c
+  
+  if (this->_staticOrMembre == true)
+    os_get<<"static ";
+  os_get<<this->getType();
+  os_get<<"\t\t"<<this->getClassName()<<"::";
+  os_get<<"ge"<<buff<<"(void) const"<<std::endl;
+  os_get<<"{"<<std::endl;
+  os_get<<"\t"<<"return this->"<<this->getName()<<";"<<std::endl;
+  os_get<<"}"<<std::endl;
+  
+}
+
+void		Variable::write_file_setter_struct(std::ostream &os_set)
+{
+  std::string buff;
+
+  buff = this->getName();
+  buff[0] = 't';  // replace _ by 't' for complete le se 
+  buff[1] = buff[1] -32; // Upper the "first" c
+  
+  if (this->_staticOrMembre == true)
+    os_set<<"static ";
+  os_set<<this->getType();
+  os_set<<"\t\t"<<this->getClassName()<<"::";
+  os_set<<"se"<<buff<<"(";
+
+  buff[0] = ' ';  // replace 't' by ' '
+  buff[1] = buff[1] +32; // Loupper the "first" c
+  os_set<<this->getType()<<" const"<<buff<< ")"<<std::endl;
+  os_set<<"{"<<std::endl;
+  os_set<<"\t"<<"this->"<<this->getName()<<" ="<< buff<<";"<<std::endl;
+  os_set<<"}"<<std::endl;
+}
+
+bool          Variable::checkValideIniVisibility(std::string const visibility)
+{
+  if (visibility == "private")
+    return true;
+  else if (visibility == "public")
+    return true;
+  else if (visibility == "protected")
+    return true;
+  return false;
+}
 /*
  *
  * Geter and seter

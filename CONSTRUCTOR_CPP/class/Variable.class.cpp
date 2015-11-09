@@ -137,7 +137,7 @@ void		Variable::write_file_setter_proto(std::ostream &os_set)
   os_set <<"\t";
   if (this->_staticOrMembre == true)
     os_set<<"static ";
-  os_set<<"(void)";
+  os_set<<"void";
   os_set<<"\t\tse"<<buff<<"(";
 
   buff[0] = ' ';  // replace 't' by ' '
@@ -174,7 +174,7 @@ void		Variable::write_file_setter_struct(std::ostream &os_set)
   
   if (this->_staticOrMembre == true)
     os_set<<"static ";
-  os_set<<"(void)";
+  os_set<<"void";
   os_set<<"\t\t"<<this->getClassName()<<"::";
   os_set<<"se"<<buff<<"(";
 

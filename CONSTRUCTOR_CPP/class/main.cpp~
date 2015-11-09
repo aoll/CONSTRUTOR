@@ -209,6 +209,15 @@ int	main(void)
   std::string	str_class_cpp = className;
   str_class_cpp += ".class.cpp";
 
+    /*
+   * Write in "file".class.cpp
+   */
+  myCppFile.open (str_class_cpp.c_str());
+  
+  myCppFile<<"#include \""<<className<<".class.hpp\""<<std::endl<<std::endl;
+
+  myCppFile<<std::endl << "/*\n * Constructor, destructor and overload operator\n */"<<std::endl;
+
     //constructor & overload operator
   myCppFile<<className<<"::"<<className<<"(void)"<<std::endl;
   myCppFile<<"{"<<std::endl;
@@ -226,20 +235,15 @@ int	main(void)
   myCppFile<<"// std::cout<<\"des default call\""<<std::endl<<"}"<<std::endl;
   myCppFile<<std::endl;
 
-  myCppFile<<className<<"\t"<<className<<"::&operator=("<<className<<" const &srcOp)"<<std::endl;
+  myCppFile<<className<<" &\t"<<className<<"::operator=("<<className<<" const &srcOp)"<<std::endl;
   myCppFile<<"{"<<std::endl;
-  myCppFile<<"// std::cout<<\"operator= call\""<<std::endl<<"}"<<std::endl;
+  myCppFile<<"// std::cout<<\"operator= call\""<<std::endl;
+  std::cout<<"return *this;";
+  std::cout<<"}"<<std::endl;
   myCppFile<<std::endl;
-
-
-
-  /*
-   * Write in "file".class.cpp
-   */
-  myCppFile.open (str_class_cpp.c_str());
-  
-  myCppFile<<"#include \""<<className<<".class.hpp\""<<std::endl;
  
+
+  myCppFile<<std::endl << "/*\n * Some stuff\n */"<<std::endl;
   //write function struct in .cpp
   int nb = 0;
   while(nb < function[0].getNbFunction())
@@ -247,6 +251,8 @@ int	main(void)
       myCppFile<<std::endl;
       function[nb++].writeFunctionStruct(myCppFile);
     }
+
+  myCppFile<<std::endl  << "/*\n * Getter and Setter\n */"<<std::endl;
   //write getter and setter struct in .cpp
   nb = 0;
   while(nb < var[0].getNbVariable())

@@ -238,7 +238,7 @@ int	main(void)
   myCppFile<<className<<" &\t"<<className<<"::operator=("<<className<<" const &srcOp)"<<std::endl;
   myCppFile<<"{"<<std::endl;
   myCppFile<<"// std::cout<<\"operator= call\""<<std::endl;
-  myCppFile<<"return *this;";
+  myCppFile<<"return *this;"<<std::endl;
   myCppFile<<"}"<<std::endl;
   myCppFile<<std::endl;
  

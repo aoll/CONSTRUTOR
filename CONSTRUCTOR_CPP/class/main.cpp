@@ -196,6 +196,14 @@ int	main(void)
 
   myfile<<std::endl;
   myfile<<"};"<<std::endl;
+
+//std::ostream overload operator <<
+
+  myfile<<std::endl  << "/*\n * Ostream Operator <<\n */"<<std::endl;
+  
+  myfile<<"std::ostream"<<" &\t"<<"operator<<("<<"std::ostream &os, "<<className<<" const &srcOp);"<<std::endl;
+   myfile<<std::endl;
+
   myfile<<"# endif"<<std::endl;
   
   myfile.close();
@@ -264,6 +272,16 @@ int	main(void)
 	}
       nb++;
     }
+// ostream operator <<
+  myCppFile<<std::endl  << "/*\n * Ostream Operator <<\n */"<<std::endl;
+  
+  myCppFile<<"std::ostream"<<" &\t"<<"operator<<("<<"std::ostream &os, "<<className<<" const &srcOp)"<<std::endl;
+  myCppFile<<"{"<<std::endl;
+  myCppFile<<"//os<<\"operator<< call\""<<std::endl;
+  myCppFile<<"return os;"<<std::endl;
+  myCppFile<<"}"<<std::endl;
+  myCppFile<<std::endl;
+
   myCppFile.close();
 
   delete [] var;
